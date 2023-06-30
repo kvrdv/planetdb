@@ -1,16 +1,23 @@
-import './Header.css';
+import './header.scss';
 
 export default function Header() {
-  return (
-    <div className="header d-flex">
-      <h3 className="pagename">
-        <a href="#">PlanetDB</a>
-      </h3>
-      <ul className="d-flex">
-        <li><a href="#">People</a></li>
-        <li><a href="#">Planets</a></li>
-        <li><a href="#">Starships</a></li>
-      </ul>
-    </div>
-  );
+    return (
+        <header className="header d-flex">
+            <h3>
+                <a className="header__title" href="https://github.com/kvrdv">planetdb</a>
+            </h3>
+
+            <ul className="header__nav d-flex">
+                <li className="header__nav-item">
+                    <span>People</span>
+                </li>
+                <li className="header__nav-item">
+                    <span>Planets</span>
+                </li>
+                <li className="header__nav-item">
+                    <span>Starships</span>
+                </li>
+            </ul>
+        </header>
+    );
 }

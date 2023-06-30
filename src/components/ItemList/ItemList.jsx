@@ -1,56 +1,64 @@
 import {useState, useEffect} from 'react';
+// import SwapiService from '../../services/SwapiService';
+import Spinner from '../Spinner';
+import ErrorIndicator from '../ErrorIndicator';
+import './itemList.scss';
 
-import SwapiService from '../../services/SwapiService';
-import Spinner from '../Spinner/Spinner';
-import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
+export default function ItemList({onItemSelected, getData}) {
+    const [itemList, setItemList] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
-import './ItemList.css';
-
-export default function ItemList({onItemSelected}) {
-  const [itemList, setItemList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const swapiService = new SwapiService();
-
-    swapiService.getAllPeople()
-      .then((itemList) => {
-        setItemList(itemList);
+    function onError() {
+        setError(true);
         setLoading(false);
-      })
-      .catch((err) => {
-        onError(err);
-      });
-  }, []);
+    } 
 
-  function onError() {
-    setError(true);
-    setLoading(false);
-  } 
+    useEffect(() => {
+        getData()
+            .then((itemList) => {
+                setItemList(itemList);
+            })
+            .catch((err) => {
+                onError(err);
+            });
+    },[]);
 
-  function renderItems(arr) {
-    return arr.map(({id, name}) => {
-      return (
-        <li className="list-group-item" 
-            key={id} 
-            onClick={() => onItemSelected(id)}
-            >
-          {name}
-        </li>
-      );
-    });
-  }
+    // useEffect(() => {
+    //     const swapiService = new SwapiService();
+    //         swapiService.getAllPeople()
+    //         .then((itemList) => {
+    //             setItemList(itemList);
+    //             setLoading(false);
+    //         })
+    //         .catch((err) => {
+    //             onError(err);
+    //         });
+    // }, []);
 
-  if (!itemList) {
-    return <Spinner />
-  }
+    function renderItems(arr) {
+        return arr.map(({id, name}) => {
+            return (
+                <li 
+                    className="item-list__item" 
+                    key={id} 
+                    onClick={() => onItemSelected(id)}
+                >
+                    {name}
+                </li>
+            );
+        });
+    }
 
-  const hasData = !(loading || error);
+    if (!itemList) {
+        return <Spinner />
+    }
 
-  return (
-    <ul className="item-list list-group">
-      {loading ? <Spinner /> : hasData ? renderItems(itemList) : <ErrorIndicator />}
-    </ul>
-  );
+    const hasData = !(loading || error);
+
+    return (
+        <ul className="item-list list-group">
+            {loading ? <Spinner /> : hasData ? renderItems(itemList) : <ErrorIndicator />}
+        </ul>
+    );
 }

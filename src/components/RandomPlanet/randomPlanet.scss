@@ -1,0 +1,19 @@
+.random-planet {
+    display: flex;
+    padding: 1rem;
+    border: 1px solid #444;
+}
+
+.random-planet__image {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.random-planet__info {
+    margin-left: 2rem;
+}
+
+.random-planet__list {
+    min-width: 250px;
+}
